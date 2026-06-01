@@ -1,0 +1,667 @@
+OpenAI Codex v0.103.0 (research preview)
+--------
+workdir: /home/openclaw/.openclaw/workspace/projects/chroma-drop
+model: gpt-5.3-codex
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: auto
+session id: 019dea4b-40dc-7ec3-b288-0696fd8eb879
+--------
+user
+Generate three documents for Chroma Drop game according to the game planning standard. 1) docs/spec.md with Q&A discovery section covering core fantasy, hook, retention, session length, skill vs luck, fail-state fairness, difficulty ramp, distinctive mechanic, art scope, audio plan, monetization, technical constraints. Also include concept summary, USP, audience, moat. 2) docs/technical-plan.md outlining architecture, tech stack, libraries, performance budget. 3) docs/tasks.md with MVP task list, priorities, dependencies. Use the following concept: Chroma Drop is a color-matching drop puzzle where colored blocks fall from the top at a steady pace; you rotate and place them to create clusters of 4+ same-colored blocks that clear with satisfying effects. The board fills gradually; reaching a threshold triggers Game Over. Include daily challenge seeds, combo multiplier, and satisfying particle effects. Write the files now.
+mcp startup: no servers
+warning: Your account was flagged for potentially high-risk cyber activity and this request was routed to gpt-5.2 as a fallback. To regain access to gpt-5.3-codex, apply for trusted access: https://chatgpt.com/cyber or learn more: https://developers.openai.com/codex/concepts/cyber-safety
+codex
+I’ll create the three requested planning docs under `docs/` and align them to a clear game-planning structure. I’m checking the repository layout first so I can place and format them consistently.
+
+thinking
+**Troubleshooting tool access**
+
+I’m dealing with a situation where all commands seem to be failing due to a sandbox restriction. It could be that I can't access any tools. I still need to fulfill the user's request by providing file contents, but I'm unsure if I can write. I might try using apply_patch, even if it could fail again. I think the tool could work directly instead of using the shell, so let’s give apply_patch a shot to add files. First, I need to update my commentary before making edits.
+codex
+I hit an environment sandbox restriction that prevents shell access, so I’m proceeding by writing the three files directly via patch. I’ll add full drafts now for `docs/spec.md`, `docs/technical-plan.md`, and `docs/tasks.md`.
+codex
+File writes are blocked in this environment (`read-only` plus sandbox denial), so I can’t persist files on disk. I prepared complete document contents below so you still have the three deliverables immediately.
+codex
+I couldn’t write files in this session because the workspace is read-only and command execution is sandbox-blocked.  
+Here are the complete document contents for the three requested files.
+
+`docs/spec.md`
+```md
+# Chroma Drop - Game Spec
+
+## Concept Summary
+Chroma Drop is a color-matching drop puzzle game. Colored blocks fall from the top at a steady pace. The player rotates and places blocks to create clusters of 4 or more same-colored blocks, which clear with satisfying particle and audio feedback. The board fills over time; crossing a fill threshold triggers Game Over.
+
+## Core Fantasy
+You are a fast, precise "flow architect" turning incoming chaos into clean chain reactions.
+
+## USP
+- Steady-pressure drop puzzle with cluster-based clears (4+) and chain/combo optimization.
+- Daily challenge seeds where all players face identical seeded conditions.
+- Strong feel layer: crisp controls, punchy clears, readable combo multiplier feedback, satisfying particles.
+
+## Audience
+- Casual-to-midcore puzzle players who enjoy short, repeatable runs.
+- Score-chasers who like optimization and mastery.
+- Competitive casual players motivated by daily challenge rankings.
+
+## Moat
+- Tuned game feel (input latency, timing windows, FX clarity) that is hard to replicate well.
+- Deterministic daily seed ecosystem enabling fair social competition.
+- Robust balancing framework around fairness, pacing, and ramp.
+
+## Discovery Q&A
+
+### Core fantasy
+Q: What should players feel?
+A: Controlled urgency: pressure from rising board state, but confidence from clear tactical choices.
+
+### Hook
+Q: Why continue after first run?
+A: Immediate readability and satisfying clears, then deeper mastery through combo routing and daily challenge competition.
+
+### Retention
+Q: What brings players back day 1/day 7?
+A:
+- Daily challenge seed with score comparison.
+- PB/streak tracking.
+- End-of-run stat recap (max combo, clears, survival time) that prompts “one more run.”
+
+### Session length
+Q: How long is one session?
+A:
+- Target average run: 3-8 minutes.
+- New players: 2-4 minutes.
+- Skilled players: 8-15 minutes.
+
+### Skill vs luck
+Q: How much is skill-based?
+A:
+- Predominantly skill-based.
+- RNG limited via weighted distribution and anti-drought rules.
+- Daily challenge uses fixed seed for fairness and comparability.
+
+### Fail-state fairness
+Q: How do we ensure losses feel fair?
+A:
+- Loss only when board fill threshold is exceeded and resolve window ends.
+- Short grace lock delay before final Game Over.
+- Clear danger-zone telegraphing near threshold.
+
+### Difficulty ramp
+Q: How does challenge escalate?
+A:
+- Gradual fall-speed increase over time/score tiers.
+- Optional color-pool expansion in later tiers.
+- Higher pressure from suboptimal placements; combos serve as comeback mechanic.
+
+### Distinctive mechanic
+Q: What makes this game stand out?
+A:
+- Cluster clear rule (4+) plus explicit combo multiplier for planned chain timing.
+- Shared daily seeded runs for direct strategy comparison.
+
+### Art scope
+Q: What visual scope is right for MVP?
+A:
+- Minimalist but polished board and UI.
+- High-contrast color palette for readability.
+- Particle effects focused on clears, combo milestones, and danger threshold.
+
+### Audio plan
+Q: What audio is required?
+A:
+- Distinct SFX: move/rotate, lock, clear, combo-up, warning, game-over.
+- Adaptive music intensity tied to danger state and combo flow.
+- Mix hierarchy prioritizing gameplay cues.
+
+### Monetization
+Q: What monetization approach fits?
+A:
+- MVP: no pay-to-win mechanics.
+- Post-MVP options: cosmetic themes, optional ad-based retry convenience, premium no-ads.
+- Daily challenge scoring integrity remains monetization-neutral.
+
+### Technical constraints
+Q: What constraints shape implementation?
+A:
+- Deterministic seed/replay-safe game simulation.
+- Stable frame pacing and low input latency on mid-tier mobile hardware.
+- Lightweight persistence for settings/stats; optional cloud sync later.
+
+## Gameplay Pillars
+- Readability under pressure.
+- Agency and fairness.
+- Satisfying clears and combo flow.
+- Fast restart loop.
+
+## Success Criteria (MVP)
+- New players understand controls and clear rule inside first 30 seconds.
+- First-session median total playtime reaches at least 5 minutes across multiple runs.
+- Daily challenge participation demonstrates repeat engagement.
+- No major fairness issues from RNG or hidden systems.
+```
+
+`docs/technical-plan.md`
+```md
+# Chroma Drop - Technical Plan
+
+## 1) Architecture Overview
+- Core architecture: deterministic simulation + rendering/view layer separation.
+- Game loop:
+  - Fixed-timestep simulation (e.g., 60 Hz) for consistent logic.
+  - Render interpolation for smooth visuals.
+- Major modules:
+  - `GameState`: board, active piece, queue, score, combo, timers.
+  - `Simulation`: gravity tick, input resolution, placement, cluster detection, clear resolution, combo progression, loss checks.
+  - `RNG/Seed`: deterministic pseudo-random stream; supports daily challenge seeds.
+  - `RulesConfig`: tunable balance params (speed ramp, color weights, threshold, combo multipliers).
+  - `Effects`: particle/audio event bus subscribed to simulation events.
+  - `Persistence`: settings, stats, best scores, daily challenge history.
+  - `UI`: menus, HUD, end-of-run summary, challenge entry points.
+
+## 2) Proposed Tech Stack
+Assuming web-first delivery with mobile support via browser wrappers if needed.
+
+- Language: TypeScript
+- Runtime: Browser/WebView
+- Rendering:
+  - Preferred: Phaser 3 (fast 2D workflow, mature input/audio/tween support)
+  - Alternative: PixiJS + custom loop (more control, higher integration overhead)
+- State/logic:
+  - Pure TS domain module for deterministic simulation (framework-agnostic)
+- Build tooling:
+  - Vite
+- Testing:
+  - Vitest for unit tests
+  - Playwright (optional) for basic end-to-end input/regression checks
+- Storage:
+  - LocalStorage or IndexedDB (if replay/history grows)
+
+## 3) Libraries
+- `phaser` (or `pixi.js` alternative path)
+- `zod` for config validation
+- `seedrandom` or custom deterministic PRNG implementation
+- `howler` optional if using richer audio routing beyond engine defaults
+- `vitest` for tests
+- `eslint` + `prettier` for code quality
+
+## 4) Data and Determinism
+- Daily challenge seed format:
+  - `YYYY-MM-DD` + salt/version => numeric seed.
+- Deterministic requirements:
+  - All gameplay RNG consumes a single ordered stream.
+  - Simulation must be independent of render framerate.
+  - Input events are timestamped/tick-indexed before resolution.
+- Replay/debug support (MVP-lite):
+  - Persist seed + ordered input log for run reproduction in dev builds.
+
+## 5) Gameplay Systems Plan
+- Board:
+  - 2D grid with occupancy/color values.
+- Piece flow:
+  - Spawn active piece -> player move/rotate -> soft/hard drop -> lock.
+- Cluster clear:
+  - Flood-fill / BFS to find connected same-color groups.
+  - Clear groups with size >= 4.
+- Combo multiplier:
+  - Consecutive clears within combo window increase multiplier.
+  - Multiplier decays/resets if no qualifying clear in window.
+- Loss condition:
+  - Check fill threshold after lock/resolve cycle.
+  - Trigger warning state near threshold.
+
+## 6) Performance Budget
+Target: stable 60 FPS on mid-tier mobile devices.
+
+- Frame time budget: <= 16.7 ms/frame average.
+- Simulation budget: <= 2 ms/frame.
+- Rendering + FX budget: <= 8 ms/frame average.
+- GC pressure:
+  - Avoid per-frame allocations in hot paths.
+  - Reuse arrays/objects for cluster search and particle pools.
+- Particle budget:
+  - Cap concurrent particles (e.g., 150-250 on mobile).
+  - Dynamic quality scaling under frame drops.
+- Audio:
+  - Preload short SFX buffers.
+  - Limit simultaneous SFX voices (e.g., 8-12).
+
+## 7) Technical Risks and Mitigations
+- Risk: Non-deterministic behavior across devices.
+  - Mitigation: fixed-step loop, deterministic PRNG, deterministic tests.
+- Risk: Input latency harming feel.
+  - Mitigation: direct input handling on tick boundary, minimal handler overhead, avoid heavy UI overlays during gameplay.
+- Risk: FX overdraw on low-end devices.
+  - Mitigation: pooled particles, capped emitters, quality presets.
+- Risk: Balance churn.
+  - Mitigation: externalized `RulesConfig`, telemetry-ready event hooks.
+
+## 8) Telemetry (Optional for MVP, Recommended)
+- Events:
+  - run_start, run_end, max_combo, survival_time, game_over_reason, daily_challenge_entered/completed.
+- Purpose:
+  - Validate difficulty ramp, retention loops, and fairness.
+
+## 9) Milestone Outline
+- Milestone 1: deterministic core loop + controls + basic clears.
+- Milestone 2: combo system + difficulty ramp + game over logic.
+- Milestone 3: daily challenge seed pipeline + score submission scaffold.
+- Milestone 4: polish pass (particles/audio/UI), optimization, QA.
+```
+
+`docs/tasks.md`
+```md
+# Chroma Drop - MVP Tasks
+
+## Priority Legend
+- P0: must-have for MVP
+- P1: high value, include if schedule allows within MVP window
+- P2: post-MVP or polish
+
+## Task List (with Dependencies)
+
+1. [P0] Project bootstrap and tooling
+- Scope: initialize TS game project, lint/format/test setup, CI check.
+- Depends on: none.
+
+2. [P0] Core board model and deterministic simulation loop
+- Scope: fixed timestep loop, board grid, spawn/lock cycle, seeded RNG.
+- Depends on: 1.
+
+3. [P0] Input and piece controls
+- Scope: move left/right, rotate, soft drop, lock behavior.
+- Depends on: 2.
+
+4. [P0] Cluster detection and clear resolution (4+ same color)
+- Scope: BFS/flood-fill group detection, clear animation trigger events.
+- Depends on: 2, 3.
+
+5. [P0] Game over threshold and fairness window
+- Scope: fill-threshold detection, warning state, short grace lock delay.
+- Depends on: 2, 4.
+
+6. [P0] Scoring and combo multiplier
+- Scope: base scoring, combo window, multiplier escalation/reset rules.
+- Depends on: 4.
+
+7. [P0] Difficulty ramp
+- Scope: progressive fall speed and optional complexity scaling.
+- Depends on: 2, 6.
+
+8. [P0] HUD and core UI flow
+- Scope: score, combo display, pause, game over summary, restart loop.
+- Depends on: 3, 5, 6.
+
+9. [P0] Daily challenge seed system
+- Scope: date-based seed generation, challenge mode entry, seed lock.
+- Depends on: 2, 6.
+
+10. [P0] Local persistence
+- Scope: save settings, personal best, daily challenge history.
+- Depends on: 8, 9.
+
+11. [P1] Particle effects polish
+- Scope: clear bursts, combo milestone effects, warning effects.
+- Depends on: 4, 6.
+
+12. [P1] Audio feedback pass
+- Scope: move/rotate/lock/clear/combo/warning/game-over SFX and music layering.
+- Depends on: 8.
+
+13. [P1] Performance optimization pass
+- Scope: particle pooling, allocation reduction, mobile profiling, quality scaler.
+- Depends on: 11, 12.
+
+14. [P1] Determinism and regression test suite
+- Scope: seed-based snapshot tests, replay consistency tests, scoring invariants.
+- Depends on: 2, 4, 6, 9.
+
+15. [P2] Leaderboard backend integration (daily challenge)
+- Scope: authenticated score submission, anti-cheat checks, rankings UI.
+- Depends on: 9, 14.
+
+16. [P2] Cosmetics and monetization scaffolding
+- Scope: theme packs, optional ad/premium toggle wiring.
+- Depends on: 8, 10.
+
+## MVP Exit Criteria
+- Playable core loop with fair game over behavior.
+- Clear rule (4+) and combo multiplier functioning and legible.
+- Daily challenge seed mode playable and deterministic.
+- Satisfying baseline particles/audio in place.
+- Stable performance target met on representative mid-tier mobile hardware.
+
+## Suggested Build Order
+1. Systems foundation: 1 -> 2 -> 3 -> 4 -> 5  
+2. Progression loop: 6 -> 7 -> 8  
+3. Retention core: 9 -> 10  
+4. Feel/perf quality: 11 -> 12 -> 13  
+5. Confidence checks: 14
+```
+
+If you want, I can also provide a tighter “producer version” of `tasks.md` with estimated effort (S/M/L) and owner role tags.
+tokens used
+9,094
+I couldn’t write files in this session because the workspace is read-only and command execution is sandbox-blocked.  
+Here are the complete document contents for the three requested files.
+
+`docs/spec.md`
+```md
+# Chroma Drop - Game Spec
+
+## Concept Summary
+Chroma Drop is a color-matching drop puzzle game. Colored blocks fall from the top at a steady pace. The player rotates and places blocks to create clusters of 4 or more same-colored blocks, which clear with satisfying particle and audio feedback. The board fills over time; crossing a fill threshold triggers Game Over.
+
+## Core Fantasy
+You are a fast, precise "flow architect" turning incoming chaos into clean chain reactions.
+
+## USP
+- Steady-pressure drop puzzle with cluster-based clears (4+) and chain/combo optimization.
+- Daily challenge seeds where all players face identical seeded conditions.
+- Strong feel layer: crisp controls, punchy clears, readable combo multiplier feedback, satisfying particles.
+
+## Audience
+- Casual-to-midcore puzzle players who enjoy short, repeatable runs.
+- Score-chasers who like optimization and mastery.
+- Competitive casual players motivated by daily challenge rankings.
+
+## Moat
+- Tuned game feel (input latency, timing windows, FX clarity) that is hard to replicate well.
+- Deterministic daily seed ecosystem enabling fair social competition.
+- Robust balancing framework around fairness, pacing, and ramp.
+
+## Discovery Q&A
+
+### Core fantasy
+Q: What should players feel?
+A: Controlled urgency: pressure from rising board state, but confidence from clear tactical choices.
+
+### Hook
+Q: Why continue after first run?
+A: Immediate readability and satisfying clears, then deeper mastery through combo routing and daily challenge competition.
+
+### Retention
+Q: What brings players back day 1/day 7?
+A:
+- Daily challenge seed with score comparison.
+- PB/streak tracking.
+- End-of-run stat recap (max combo, clears, survival time) that prompts “one more run.”
+
+### Session length
+Q: How long is one session?
+A:
+- Target average run: 3-8 minutes.
+- New players: 2-4 minutes.
+- Skilled players: 8-15 minutes.
+
+### Skill vs luck
+Q: How much is skill-based?
+A:
+- Predominantly skill-based.
+- RNG limited via weighted distribution and anti-drought rules.
+- Daily challenge uses fixed seed for fairness and comparability.
+
+### Fail-state fairness
+Q: How do we ensure losses feel fair?
+A:
+- Loss only when board fill threshold is exceeded and resolve window ends.
+- Short grace lock delay before final Game Over.
+- Clear danger-zone telegraphing near threshold.
+
+### Difficulty ramp
+Q: How does challenge escalate?
+A:
+- Gradual fall-speed increase over time/score tiers.
+- Optional color-pool expansion in later tiers.
+- Higher pressure from suboptimal placements; combos serve as comeback mechanic.
+
+### Distinctive mechanic
+Q: What makes this game stand out?
+A:
+- Cluster clear rule (4+) plus explicit combo multiplier for planned chain timing.
+- Shared daily seeded runs for direct strategy comparison.
+
+### Art scope
+Q: What visual scope is right for MVP?
+A:
+- Minimalist but polished board and UI.
+- High-contrast color palette for readability.
+- Particle effects focused on clears, combo milestones, and danger threshold.
+
+### Audio plan
+Q: What audio is required?
+A:
+- Distinct SFX: move/rotate, lock, clear, combo-up, warning, game-over.
+- Adaptive music intensity tied to danger state and combo flow.
+- Mix hierarchy prioritizing gameplay cues.
+
+### Monetization
+Q: What monetization approach fits?
+A:
+- MVP: no pay-to-win mechanics.
+- Post-MVP options: cosmetic themes, optional ad-based retry convenience, premium no-ads.
+- Daily challenge scoring integrity remains monetization-neutral.
+
+### Technical constraints
+Q: What constraints shape implementation?
+A:
+- Deterministic seed/replay-safe game simulation.
+- Stable frame pacing and low input latency on mid-tier mobile hardware.
+- Lightweight persistence for settings/stats; optional cloud sync later.
+
+## Gameplay Pillars
+- Readability under pressure.
+- Agency and fairness.
+- Satisfying clears and combo flow.
+- Fast restart loop.
+
+## Success Criteria (MVP)
+- New players understand controls and clear rule inside first 30 seconds.
+- First-session median total playtime reaches at least 5 minutes across multiple runs.
+- Daily challenge participation demonstrates repeat engagement.
+- No major fairness issues from RNG or hidden systems.
+```
+
+`docs/technical-plan.md`
+```md
+# Chroma Drop - Technical Plan
+
+## 1) Architecture Overview
+- Core architecture: deterministic simulation + rendering/view layer separation.
+- Game loop:
+  - Fixed-timestep simulation (e.g., 60 Hz) for consistent logic.
+  - Render interpolation for smooth visuals.
+- Major modules:
+  - `GameState`: board, active piece, queue, score, combo, timers.
+  - `Simulation`: gravity tick, input resolution, placement, cluster detection, clear resolution, combo progression, loss checks.
+  - `RNG/Seed`: deterministic pseudo-random stream; supports daily challenge seeds.
+  - `RulesConfig`: tunable balance params (speed ramp, color weights, threshold, combo multipliers).
+  - `Effects`: particle/audio event bus subscribed to simulation events.
+  - `Persistence`: settings, stats, best scores, daily challenge history.
+  - `UI`: menus, HUD, end-of-run summary, challenge entry points.
+
+## 2) Proposed Tech Stack
+Assuming web-first delivery with mobile support via browser wrappers if needed.
+
+- Language: TypeScript
+- Runtime: Browser/WebView
+- Rendering:
+  - Preferred: Phaser 3 (fast 2D workflow, mature input/audio/tween support)
+  - Alternative: PixiJS + custom loop (more control, higher integration overhead)
+- State/logic:
+  - Pure TS domain module for deterministic simulation (framework-agnostic)
+- Build tooling:
+  - Vite
+- Testing:
+  - Vitest for unit tests
+  - Playwright (optional) for basic end-to-end input/regression checks
+- Storage:
+  - LocalStorage or IndexedDB (if replay/history grows)
+
+## 3) Libraries
+- `phaser` (or `pixi.js` alternative path)
+- `zod` for config validation
+- `seedrandom` or custom deterministic PRNG implementation
+- `howler` optional if using richer audio routing beyond engine defaults
+- `vitest` for tests
+- `eslint` + `prettier` for code quality
+
+## 4) Data and Determinism
+- Daily challenge seed format:
+  - `YYYY-MM-DD` + salt/version => numeric seed.
+- Deterministic requirements:
+  - All gameplay RNG consumes a single ordered stream.
+  - Simulation must be independent of render framerate.
+  - Input events are timestamped/tick-indexed before resolution.
+- Replay/debug support (MVP-lite):
+  - Persist seed + ordered input log for run reproduction in dev builds.
+
+## 5) Gameplay Systems Plan
+- Board:
+  - 2D grid with occupancy/color values.
+- Piece flow:
+  - Spawn active piece -> player move/rotate -> soft/hard drop -> lock.
+- Cluster clear:
+  - Flood-fill / BFS to find connected same-color groups.
+  - Clear groups with size >= 4.
+- Combo multiplier:
+  - Consecutive clears within combo window increase multiplier.
+  - Multiplier decays/resets if no qualifying clear in window.
+- Loss condition:
+  - Check fill threshold after lock/resolve cycle.
+  - Trigger warning state near threshold.
+
+## 6) Performance Budget
+Target: stable 60 FPS on mid-tier mobile devices.
+
+- Frame time budget: <= 16.7 ms/frame average.
+- Simulation budget: <= 2 ms/frame.
+- Rendering + FX budget: <= 8 ms/frame average.
+- GC pressure:
+  - Avoid per-frame allocations in hot paths.
+  - Reuse arrays/objects for cluster search and particle pools.
+- Particle budget:
+  - Cap concurrent particles (e.g., 150-250 on mobile).
+  - Dynamic quality scaling under frame drops.
+- Audio:
+  - Preload short SFX buffers.
+  - Limit simultaneous SFX voices (e.g., 8-12).
+
+## 7) Technical Risks and Mitigations
+- Risk: Non-deterministic behavior across devices.
+  - Mitigation: fixed-step loop, deterministic PRNG, deterministic tests.
+- Risk: Input latency harming feel.
+  - Mitigation: direct input handling on tick boundary, minimal handler overhead, avoid heavy UI overlays during gameplay.
+- Risk: FX overdraw on low-end devices.
+  - Mitigation: pooled particles, capped emitters, quality presets.
+- Risk: Balance churn.
+  - Mitigation: externalized `RulesConfig`, telemetry-ready event hooks.
+
+## 8) Telemetry (Optional for MVP, Recommended)
+- Events:
+  - run_start, run_end, max_combo, survival_time, game_over_reason, daily_challenge_entered/completed.
+- Purpose:
+  - Validate difficulty ramp, retention loops, and fairness.
+
+## 9) Milestone Outline
+- Milestone 1: deterministic core loop + controls + basic clears.
+- Milestone 2: combo system + difficulty ramp + game over logic.
+- Milestone 3: daily challenge seed pipeline + score submission scaffold.
+- Milestone 4: polish pass (particles/audio/UI), optimization, QA.
+```
+
+`docs/tasks.md`
+```md
+# Chroma Drop - MVP Tasks
+
+## Priority Legend
+- P0: must-have for MVP
+- P1: high value, include if schedule allows within MVP window
+- P2: post-MVP or polish
+
+## Task List (with Dependencies)
+
+1. [P0] Project bootstrap and tooling
+- Scope: initialize TS game project, lint/format/test setup, CI check.
+- Depends on: none.
+
+2. [P0] Core board model and deterministic simulation loop
+- Scope: fixed timestep loop, board grid, spawn/lock cycle, seeded RNG.
+- Depends on: 1.
+
+3. [P0] Input and piece controls
+- Scope: move left/right, rotate, soft drop, lock behavior.
+- Depends on: 2.
+
+4. [P0] Cluster detection and clear resolution (4+ same color)
+- Scope: BFS/flood-fill group detection, clear animation trigger events.
+- Depends on: 2, 3.
+
+5. [P0] Game over threshold and fairness window
+- Scope: fill-threshold detection, warning state, short grace lock delay.
+- Depends on: 2, 4.
+
+6. [P0] Scoring and combo multiplier
+- Scope: base scoring, combo window, multiplier escalation/reset rules.
+- Depends on: 4.
+
+7. [P0] Difficulty ramp
+- Scope: progressive fall speed and optional complexity scaling.
+- Depends on: 2, 6.
+
+8. [P0] HUD and core UI flow
+- Scope: score, combo display, pause, game over summary, restart loop.
+- Depends on: 3, 5, 6.
+
+9. [P0] Daily challenge seed system
+- Scope: date-based seed generation, challenge mode entry, seed lock.
+- Depends on: 2, 6.
+
+10. [P0] Local persistence
+- Scope: save settings, personal best, daily challenge history.
+- Depends on: 8, 9.
+
+11. [P1] Particle effects polish
+- Scope: clear bursts, combo milestone effects, warning effects.
+- Depends on: 4, 6.
+
+12. [P1] Audio feedback pass
+- Scope: move/rotate/lock/clear/combo/warning/game-over SFX and music layering.
+- Depends on: 8.
+
+13. [P1] Performance optimization pass
+- Scope: particle pooling, allocation reduction, mobile profiling, quality scaler.
+- Depends on: 11, 12.
+
+14. [P1] Determinism and regression test suite
+- Scope: seed-based snapshot tests, replay consistency tests, scoring invariants.
+- Depends on: 2, 4, 6, 9.
+
+15. [P2] Leaderboard backend integration (daily challenge)
+- Scope: authenticated score submission, anti-cheat checks, rankings UI.
+- Depends on: 9, 14.
+
+16. [P2] Cosmetics and monetization scaffolding
+- Scope: theme packs, optional ad/premium toggle wiring.
+- Depends on: 8, 10.
+
+## MVP Exit Criteria
+- Playable core loop with fair game over behavior.
+- Clear rule (4+) and combo multiplier functioning and legible.
+- Daily challenge seed mode playable and deterministic.
+- Satisfying baseline particles/audio in place.
+- Stable performance target met on representative mid-tier mobile hardware.
+
+## Suggested Build Order
+1. Systems foundation: 1 -> 2 -> 3 -> 4 -> 5  
+2. Progression loop: 6 -> 7 -> 8  
+3. Retention core: 9 -> 10  
+4. Feel/perf quality: 11 -> 12 -> 13  
+5. Confidence checks: 14
+```
+
+If you want, I can also provide a tighter “producer version” of `tasks.md` with estimated effort (S/M/L) and owner role tags.

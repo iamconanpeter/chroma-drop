@@ -1,0 +1,52 @@
+package com.iamconanpeter.chromadrop.ui.game
+
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.lifecycle.ViewModel
+
+data class GameUiState(
+    val rows: Int = 12,
+    val columns: Int = 8
+)
+
+class GameViewModel : ViewModel() {
+    val gameState = mutableStateOf(GameUiState())
+}
+
+@Composable
+fun GameScreen(
+    modifier: Modifier = Modifier,
+    viewModel: GameViewModel = remember { GameViewModel() }
+) {
+    val gameState = remember(viewModel) { viewModel.gameState }
+
+    Canvas(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color(0xFF0E1116))
+    ) {
+        val rows = gameState.value.rows
+        val columns = gameState.value.columns
+        val cellWidth = size.width / columns
+        val cellHeight = size.height / rows
+
+        for (row in 0 until rows) {
+            for (column in 0 until columns) {
+                drawRect(
+                    color = Color(0xFF2A2F3A),
+                    topLeft = Offset(column * cellWidth, row * cellHeight),
+                    size = androidx.compose.ui.geometry.Size(cellWidth, cellHeight),
+                    style = Stroke(width = 1f)
+                )
+            }
+        }
+    }
+}
