@@ -1,12 +1,24 @@
-# Tasks for Chroma Drop MVP
+# Chroma Drop – Task List
 
-- [ ] Scaffold Android project with Jetpack Compose (gradle init, apply compose plugin).
-- [ ] Implement block grid UI and falling physics.
-- [ ] Write match detection algorithm (4+ same color).
-- [ ] Add scoring system and combo multiplier.
-- [ ] Implement deterministic daily seed generation.
-- [ ] Create main menu, game screen, game over screen.
-- [ ] Write unit tests for match detection and seed logic.
-- [ ] Configure CI GitHub Actions to run `./gradlew test assembleDebug`.
-- [ ] Generate debug APK and verify size <30 MB.
-- [ ] Prepare README with build/run instructions.
+## High‑Priority Tasks (MVP)
+1. **Project Scaffold** – Create Android project structure via Codex CLI.
+2. **Game Engine** – Implement `Board`, `Block`, and `GameEngine` with deterministic seed logic.
+3. **UI Layer** – Build main game screen using Jetpack Compose (grid display, next block preview, score HUD).
+4. **Particle Effects** – Simple burst animation on clear (Compose Canvas).
+5. **Audio Feedback** – Integrate block drop, rotation, and clear sounds via `SoundPool`.
+6. **Persistence** – Store daily seed, high‑score, and unlocked palettes using DataStore.
+7. **Unit Tests** – Write JUnit tests for board clear detection and seed reproducibility.
+8. **Gradle Validation** – Ensure `./gradlew test assembleDebug` passes with no errors.
+
+## Post‑MVP (Backlog)
+- Leaderboard sync (Firebase).
+- Rewarded ads integration.
+- Additional cosmetic skins.
+- Accessibility improvements (talkback support).
+
+## Dependencies & Tools
+- Kotlin 1.9
+- Jetpack Compose 1.6.0
+- AndroidX DataStore
+- JUnit5 + Truth
+- Espresso (optional UI test scaffold)
