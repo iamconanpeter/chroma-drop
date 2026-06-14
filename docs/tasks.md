@@ -1,16 +1,33 @@
-# Task List – Chroma Drop MVP
+# Chroma Drop - Task List
 
-- [ ] **Setup repo & CI** – init git, add Gradle wrapper, configure GitHub Actions.
-- [ ] **Create modules** – `:app`, `:game`, `:data`, `:ui`, `:ads`.
-- [ ] **Implement GameEngine** (Kotlin): board representation, piece generation, match detection, combo scoring.
-- [ ] **Deterministic Seed Service** – fetch daily JSON from placeholder endpoint, store in Room.
-- [ ] **Compose UI** – main game screen, board grid, piece preview, score overlay.
-- [ ] **Animations** – drop animation, clear sparkle, combo burst.
-- [ ] **Input handling** – tap to rotate, place piece.
-- [ ] **Game‑over handling** – overflow detection, show summary.
-- [ ] **Ads wrapper** – integrate AdMob rewarded video (placeholder ID).
-- [ ] **Unit tests** – GameEngine logic, seed service.
-- [ ] **Instrumented UI tests** – start game, place piece, verify clear.
-- [ ] **Build & validation** – `./gradlew test assembleDebug` passes.
-- [ ] **Create GitHub repo** – `iamconanpeter/chroma-drop` and push.
-- [ ] **Update tracking JSON** – set status to `shipped` and repo URL.
+## Planning
+- [ ] Draft product spec (done)
+- [ ] Draft technical plan (done)
+- [ ] Define Q&A discovery (see Q&A section below)
+
+## Development Tasks
+- [ ] Implement `core` module classes (`GameEngine`, `GameState`, `Ball`, `ColorPalette`).
+- [ ] Write unit tests for engine logic.
+- [ ] Create Android `app` module with `MainActivity` and `SurfaceView` renderer.
+- [ ] Integrate engine with UI via `LiveData`/`StateFlow`.
+- [ ] Implement input handling (tap to lock ball).
+- [ ] Add scoring, combo, lives UI feedback.
+- [ ] Add persistence for high scores (Room DB – optional).
+- [ ] Write instrumented UI tests for main flow.
+- [ ] Run lint, format, and CI checks.
+- [ ] Assemble debug APK.
+
+## Q&A Discovery (Game Planning Standard)
+**Q:** What is the target audience?
+**A:** Casual mobile gamers looking for quick 2‑minute sessions.
+
+**Q:** How will monetization be handled?
+**A:** Ads‑supported free version with optional ad‑free purchase.
+
+**Q:** Any accessibility concerns?
+**A:** Use color‑blind friendly palette and provide shape hints.
+
+**Q:** What is the minimum device spec?
+**A:** Android 5.0 (API 21) or later, 2 GB RAM, 100 MB free storage.
+
+---

@@ -1,41 +1,32 @@
-# Chroma Drop – Game Specification
+# Chroma Drop - Product Specification
 
-## Core Fantasy / Hook
-A simple, satisfying color‑matching block‑drop puzzle: colorful falling pieces, clear combos, and quick combo‑driven progress. 
+## Overview
+Chroma Drop is a fast‑paced multiplayer color‑matching game where players drop falling colored balls into a vertical slot to match a sequence of target colors. The goal is to maintain high scores while avoiding mismatches.
 
-> **3‑second hook**: “Drop a block, chain a combo, feel the satisfaction!”
+## Core Gameplay Loop
+1. A **target sequence** of 3‑5 colors appears at the top.
+2. Balls of random colors fall from the top at a controlled speed.
+3. The player taps the screen to **lock** the current ball’s color.
+4. The locked ball is added to the bottom of the slot.
+5. If the sequence at the bottom matches the target, it is cleared and the player scores points.
+6. Mis‑match resets the slot (combo resets, penalty). The game ends when the player decides to quit or loses all lives.
 
-## Retention
-- **Daily seed**: deterministic piece sequence for replay and leaderboard.
-- **Combo multiplier**: higher combos give more score, encouraging mastery.
-- **Progression**: new colors and board variations unlock after reaching thresholds.
+## Key Mechanics
+- **Color generation**: Randomly selected from a palette of 5 primary colors.
+- **Drop speed**: Increases gradually as the score rises.
+- **Combo**: Streaks of matched sequences award combo multipliers.
+- **Lives**: 3 lives. Loss of life when less than two balls are matched.
 
-## Session Length Target
-- 30 s quick loops, 2 min for replay/score‑attack.
+## Platforms & Technology
+- **Android** (API 21+)
+- **Kotlin** for logic and UI
+- **SurfaceView** for rendering
+- **Coroutines** for game loop timing
+- **JUnit5** for unit tests
 
-## Skill vs. Luck
-- Piece drop order is deterministic per day‑seed; skill in planning placements.
+## Deliverables
+- Android APK (release candidates)
+- Compute of tests
+- Documentation in this repo.
 
-## Fail‑State / Frustration Control
-- Perfect safety: placing any piece never ends the level; only board overflow ends.
-- Retrograde: counters can’t cross‑day.
-
-## Difficulty Ramp / Onboarding
-- Start board 4×4; progressively 6×6 and 8×8.
-- Early play shows three sample placements.
-
-## Distinctive Mechanic
-- **Color‑match rotation**: pieces rotate to match target; simulates a physics‑free pickup.
-
-## Art/Animation Scope
-- 10‑color palette, clean flat icons, minimal particle effects.
-
-## Audio
-- 1‑minute loop, simple chiptune, highlight beat on clear.
-
-## Monetization
-- Opt‑in rewarded video every 6th play.
-
-## Technical Constraints & Performance
-- Target coreference: <15 FPS drop animations; <200 ms per input.
-- Heap < 30 MB on low‑end devices.
+---
